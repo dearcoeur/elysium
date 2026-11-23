@@ -1,1 +1,126 @@
-
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mangaji</title>
+<style>
+:root{--a:#d14d82;--bg:#fff7f9;--card:#fff;--ink:#3b2230;--mut:#9a7a88;--soft:color-mix(in srgb,var(--a) 12%,#fff);--line:color-mix(in srgb,var(--a) 25%,#fff);--serif:ui-serif,"New York",Georgia,serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,system-ui,sans-serif}
+body{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:var(--serif);margin:0;font-weight:700}h1{font-size:30px;font-style:italic}h3{margin:22px 0 10px;font-size:19px}
+.pad{padding:calc(env(safe-area-inset-top) + 14px) 18px 0}.mut,small{color:var(--mut)}small{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ban{height:calc(190px + env(safe-area-inset-top));background:linear-gradient(160deg,var(--soft),var(--line)) center/cover;position:relative}
+.rb,.plus{position:absolute;top:calc(env(safe-area-inset-top) + 10px);right:16px;width:46px;height:46px;border-radius:16px;border:0;background:#fffc;font-size:20px;color:var(--ink)}
+.plus{position:static;background:var(--a);color:#fff;font-size:26px;flex:none}
+.who{display:flex;gap:14px;align-items:flex-end;margin-top:-52px;position:relative}
+.av{width:96px;height:96px;border-radius:50%;border:4px solid #fff;background:var(--line) center/cover;flex:none}
+.pill,.now{margin:12px 0 0}.pill{display:inline-block;background:var(--soft);color:var(--a);font-weight:600;padding:6px 14px;border-radius:99px}
+.bio{white-space:pre-wrap;font-style:italic;color:#6d4f5e;line-height:1.5}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;font-size:11px;color:var(--mut);margin:14px 0}.stats b{display:block;font:italic 700 22px var(--serif);color:var(--ink)}
+.gr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px}.row{display:flex;gap:12px;overflow-x:auto}.row .it{flex:0 0 100px}
+.it b{display:block;font-size:12.5px;margin-top:5px;line-height:1.25;max-height:2.5em;overflow:hidden}
+.cv{aspect-ratio:2/3;border-radius:12px;background:linear-gradient(160deg,var(--soft),var(--line)) center/cover;box-shadow:0 4px 14px #d14d8226;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font:12px var(--serif);color:var(--a);overflow:hidden}
+.bar{height:4px;background:var(--soft);border-radius:4px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--a)}
+.hd{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}.hd h1{flex:1;min-width:0}
+.ch{display:flex;gap:8px;overflow-x:auto;margin:8px 0;padding-bottom:2px}.ch button{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 14px;font-size:13.5px}.ch .on{background:var(--a);border-color:var(--a);color:#fff}
+input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;font:inherit;background:#fff;color:var(--ink);margin-top:4px}input[type=color]{height:44px;padding:3px}
+label{display:block;font-size:12.5px;color:var(--mut);margin-top:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.b{border:0;background:var(--a);color:#fff;border-radius:14px;padding:12px 16px;font:600 15px inherit;margin-top:14px;width:100%}.b.g{background:var(--soft);color:var(--a)}.hd .b{width:auto;margin:0;padding:10px 14px}
+.lc{margin-bottom:12px}.lc b{font:700 18px var(--serif)}.mini{display:flex;gap:8px;margin-top:10px}.mini .cv{width:48px;box-shadow:none;font-size:0}
+#nav{position:fixed;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom) + 10px);display:flex;background:#fffe;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1.5px solid var(--line);border-radius:30px;padding:6px;z-index:5}
+#nav button{flex:1;border:0;background:none;padding:8px 0;border-radius:24px;font-size:11.5px;color:var(--mut)}#nav b{display:block;font-size:19px;font-weight:400}#nav .on{background:var(--soft);color:var(--a)}
+#sh{position:fixed;inset:0;background:#3b223055;display:none;align-items:flex-end;z-index:9}#sh.o{display:flex}
+.sheet{background:var(--bg);width:100%;max-height:90%;overflow-y:auto;border-radius:28px 28px 0 0;padding:20px 18px calc(env(safe-area-inset-bottom) + 24px)}
+.cvrow{display:flex;gap:14px;align-items:flex-start;margin-top:10px}.cvrow .cv{width:96px;flex:none}.cvrow div:last-child{flex:1}.it.sel .cv{outline:3px solid var(--a)}
+</style></head><body><div id="app"></div><div id="nav"></div><div id="sh"></div>
+<script>
+const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,9);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST=['reading','completed','planning','paused','dropped'],TY=['manga','manhwa','manhua'],cap=s=>s?s[0].toUpperCase()+s.slice(1):'All';
+const DEF=()=>({profile:{name:'your name',handle:'@you',bio:'tap the pencil to make this page yours ♡',status:'',accent:'#d14d82',banner:'',avatar:'',al:'coeur'},items:[],lists:[]});
+let S=DEF(),tab='profile',view={},sheet=null,draft=null,pickSet=new Set(),msg='';
+/* storage */
+const idb=()=>new Promise((r,j)=>{const q=indexedDB.open('mangaji',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>r(q.result);q.onerror=j});
+async function load(){try{const d=await idb();return await new Promise(r=>{const g=d.transaction('k').objectStore('k').get('s');g.onsuccess=()=>r(g.result);g.onerror=()=>r()})}catch(e){}}
+async function save(){try{const d=await idb();d.transaction('k','readwrite').objectStore('k').put(JSON.parse(JSON.stringify(S)),'s')}catch(e){}}
+const pick=(max,cb)=>{const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=()=>{const f=i.files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.88))};im.src=URL.createObjectURL(f)};i.click()};
+/* helpers */
+const img=i=>i.myCover||i.cover||'';
+const cv=i=>`<div class="cv" style="background-image:url('${img(i)}')">${img(i)?'':esc(i.title)}</div>`;
+const card=(i,a='open',sel)=>`<div class="it ${sel?'sel':''}" data-a="${a}" data-id="${i.id}">${cv(i)}<div class="bar"><i style="width:${i.total?Math.min(100,i.prog/i.total*100):0}%"></i></div><b>${esc(i.title)}</b><small>${esc(i.author||i.type)}</small></div>`;
+const fl=(a,v)=>a.filter(i=>(!v.st||i.status===v.st)&&(!v.ty||i.type===v.ty)&&(!v.tag||i.tags.includes(v.tag))&&(!v.q||(i.title+' '+i.author).toLowerCase().includes(v.q.toLowerCase())));
+const chips=(arr,k,lab=cap)=>`<div class="ch">${['',...arr].map(x=>`<button class="${(view[k]||'')===x?'on':''}" data-a="set" data-k="${k}" data-v="${esc(x)}">${esc(lab(x))}</button>`).join('')}</div>`;
+const tagsOf=a=>[...new Set(a.flatMap(i=>i.tags))].sort();
+const grid=(a,act)=>`<div class="gr">${a.map(i=>card(i,act)).join('')||'<p class="mut">Nothing here yet.</p>'}</div>`;
+/* views */
+function profile(){const p=S.profile,cur=S.items.filter(i=>i.status==='reading'),done=S.items.filter(i=>i.status==='completed'),ch=S.items.reduce((a,i)=>a+(+i.prog||0),0),sc=S.items.filter(i=>i.score>0),avg=sc.length?(sc.reduce((a,i)=>a+i.score,0)/sc.length).toFixed(1):'–';
+return `<div class="ban" style="background-image:url('${p.banner}')"><button class="rb" data-a="editProfile">✎</button></div><div class="pad" style="padding-top:0"><div class="who"><div class="av" style="background-image:url('${p.avatar}')"></div><div><h1>${esc(p.name)}</h1><span class="mut">${esc(p.handle)}</span></div></div>
+${cur[0]?`<p class="now">reading: <b>${esc(cur[0].title)}</b> (ch. ${cur[0].prog}${cur[0].total?'/'+cur[0].total:''})</p>`:''}${p.status?`<span class="pill">${esc(p.status)}</span>`:''}<p class="bio">${esc(p.bio)}</p>
+<div class="card stats"><div><b>${S.items.length}</b>titles</div><div><b>${ch.toLocaleString()}</b>chapters</div><div><b>${done.length}</b>completed</div><div><b>${avg}</b>avg score</div></div>
+<h3>Reading now</h3><div class="row">${cur.map(i=>card(i)).join('')||'<p class="mut">Add or import a title to start.</p>'}</div>
+<h3>Completed</h3><div class="row">${done.slice(0,15).map(i=>card(i)).join('')||'<p class="mut">No completed titles yet.</p>'}</div></div>`}
+function shelf(){return `<div class="pad"><div class="hd"><div><h1>Shelf</h1><small>${S.items.length} titles</small></div><button class="plus" data-a="new">+</button></div>
+<input id="q" placeholder="Search title or author" value="${esc(view.q||'')}" oninput="view.q=this.value;$('#grid').innerHTML=grid(fl(S.items,view),'open')">${chips(ST,'st')}${chips(TY,'ty')}${chips(tagsOf(S.items),'tag',x=>x||'All tags')}<div id="grid">${grid(fl(S.items,view),'open')}</div></div>`}
+function lists(){const L=S.lists.find(x=>x.id===view.l);if(L)return listView(L);
+return `<div class="pad"><div class="hd"><h1>Lists</h1><button class="plus" data-a="newList">+</button></div>${S.lists.map(L=>`<div class="card lc" data-a="openList" data-id="${L.id}"><b>${esc(L.name)}</b><small>${L.items.length} titles · ${L.folders.length} folders</small><div class="mini">${L.items.slice(0,6).map(r=>S.items.find(i=>i.id===r.id)).filter(Boolean).map(cv).join('')}</div></div>`).join('')||'<p class="mut">Create a list to group titles by theme, then split it into folders.</p>'}</div>`}
+function listView(L){const its=L.items.map(r=>({...S.items.find(i=>i.id===r.id),fo:r.fo})).filter(i=>i.id),inF=its.filter(i=>!view.fo||i.fo===view.fo),F=L.folders.find(f=>f.id===view.fo);
+return `<div class="pad"><div class="hd"><button class="b g" data-a="backList">‹</button><h1>${esc(L.name)}</h1><button class="plus" data-a="pickAdd">+</button></div>
+<div class="ch"><button class="${!view.fo?'on':''}" data-a="fold" data-id="">All</button>${L.folders.map(f=>`<button class="${view.fo===f.id?'on':''}" data-a="fold" data-id="${f.id}">${esc(f.name)}</button>`).join('')}<button data-a="newFolder">+ folder</button></div>
+${chips(ST,'st')}${chips(tagsOf(inF),'tag',x=>x||'All tags')}${grid(fl(inF,view),'moveSheet')}
+<div class="two"><button class="b g" data-a="renameList">${F?'Rename folder':'Rename list'}</button><button class="b g" data-a="delList">${F?'Delete folder':'Delete list'}</button></div></div>`}
+function settings(){return `<div class="pad"><h1>Settings</h1><div class="card" style="margin-top:14px"><b>AniList import</b><p class="mut">Imports your manga list only. Titles already here keep all your edits. Your AniList list must be public.</p><input id="alu" placeholder="AniList username" value="${esc(S.profile.al)}"><button class="b" data-a="importAL">Import manga</button><p class="mut">${esc(msg)}</p></div>
+<div class="card" style="margin-top:14px"><b>Backup</b><p class="mut">Export everything (covers included) to a file, or restore from one.</p><div class="two"><button class="b g" data-a="exp">Export</button><button class="b g" data-a="imp">Restore</button></div></div></div>`}
+/* sheets */
+const opt=(a,v)=>a.map(x=>`<option value="${x}" ${x===v?'selected':''}>${cap(x)}</option>`).join('');
+function sheetHtml(){const d=draft;
+if(sheet==='item')return `<h2>${d.id?'Edit title':'Add title'}</h2><div class="cvrow">${cv(d)}<div><button class="b g" data-a="pickCover" style="margin-top:0">Upload cover</button>${d.myCover?'<button class="b g" data-a="resetCover">Use original cover</button>':''}</div></div>
+<label>Title<input id="f_title" value="${esc(d.title)}"></label><label>Author<input id="f_author" value="${esc(d.author)}"></label>
+<div class="two"><label>Type<select id="f_type">${opt(TY,d.type)}</select></label><label>Status<select id="f_status">${opt(ST,d.status)}</select></label></div>
+<div class="two"><label>Chapters read<input id="f_prog" type="number" min="0" value="${d.prog}"></label><label>Total chapters<input id="f_total" type="number" min="0" value="${d.total}"></label></div>
+<button class="b g" data-a="inc">+1 chapter</button><label>Score (0–10)<input id="f_score" type="number" min="0" max="10" step="0.5" value="${d.score}"></label>
+<label>Tags (comma separated)<input id="f_tags" value="${esc(d.tags.join(', '))}"></label><label>Notes<textarea id="f_notes" rows="3">${esc(d.notes)}</textarea></label>
+<button class="b" data-a="saveItem">Save</button>${d.id?'<button class="b g" data-a="delItem">Delete title</button>':''}`;
+if(sheet==='profile'){const p=S.profile;return `<h2>Edit profile</h2><div class="two"><button class="b g" data-a="pickBanner">Change banner</button><button class="b g" data-a="pickAvatar">Change photo</button></div>
+<label>Name<input id="p_name" value="${esc(p.name)}"></label><label>Handle<input id="p_handle" value="${esc(p.handle)}"></label><label>Status line<input id="p_status" value="${esc(p.status)}" placeholder="e.g. goal: 50 chapters a week"></label>
+<label>Bio<textarea id="p_bio" rows="4">${esc(p.bio)}</textarea></label><label>Accent color<input id="p_accent" type="color" value="${p.accent}"></label><button class="b" data-a="saveProfile">Save</button>`}
+if(sheet==='pick'){const L=S.lists.find(x=>x.id===view.l);return `<h2>Add to list</h2><input placeholder="Search" oninput="$('#pg').innerHTML=pg(this.value)" style="margin-bottom:12px"><div id="pg">${pg('')}</div><button class="b" data-a="savePick">Add selected</button>`}
+if(sheet==='move'){const L=S.lists.find(x=>x.id===view.l),r=L.items.find(x=>x.id===draft.id);return `<h2>${esc(draft.title)}</h2><label>Folder<select id="mv">${'<option value="">No folder</option>'+L.folders.map(f=>`<option value="${f.id}" ${r.fo===f.id?'selected':''}>${esc(f.name)}</option>`).join('')}</select></label><button class="b" data-a="saveMove">Save</button><button class="b g" data-a="editFromList">Edit title details</button><button class="b g" data-a="removeFromList">Remove from list</button>`}
+return ''}
+const pg=q=>`<div class="gr">${S.items.filter(i=>!q||i.title.toLowerCase().includes(q.toLowerCase())).map(i=>card(i,'togglePick',pickSet.has(i.id))).join('')}</div>`;
+function renderSheet(){const s=$('#sh');s.className=sheet?'o':'';s.innerHTML=sheet?`<div class="sheet">${sheetHtml()}</div>`:''}
+function render(){document.documentElement.style.setProperty('--a',S.profile.accent);$('#app').innerHTML=({profile,shelf,lists,settings})[tab]();
+$('#nav').innerHTML=[['profile','Profile','♡'],['shelf','Shelf','▤'],['lists','Lists','❀'],['settings','Settings','⚙']].map(([k,l,i])=>`<button class="${tab===k?'on':''}" data-a="tab" data-id="${k}"><b>${i}</b>${l}</button>`).join('');renderSheet()}
+const commit=()=>{save();render()};
+function readItem(){const g=id=>document.getElementById(id)?.value,d=draft;if(g('f_title')===undefined)return;d.title=g('f_title');d.author=g('f_author');d.type=g('f_type');d.status=g('f_status');d.prog=+g('f_prog')||0;d.total=+g('f_total')||0;d.score=+g('f_score')||0;d.tags=g('f_tags').split(',').map(x=>x.trim()).filter(Boolean);d.notes=g('f_notes')}
+const openItem=i=>{draft=i?JSON.parse(JSON.stringify(i)):{title:'',author:'',type:'manga',status:'planning',prog:0,total:0,score:0,tags:[],notes:'',cover:'',myCover:''};sheet='item';renderSheet()};
+const act={
+tab:d=>{tab=d.id;view={};render()},set:d=>{view[d.k]=view[d.k]===d.v?'':d.v;render()},
+open:d=>openItem(S.items.find(i=>i.id===d.id)),new:()=>openItem(),
+pickCover:()=>{readItem();pick(700,u=>{draft.myCover=u;renderSheet()})},resetCover:()=>{readItem();draft.myCover='';renderSheet()},inc:()=>{readItem();draft.prog++;if(draft.status==='planning')draft.status='reading';renderSheet()},
+saveItem:()=>{readItem();if(!draft.title.trim())return;if(draft.id){S.items[S.items.findIndex(i=>i.id===draft.id)]=draft}else{draft.id=uid();S.items.unshift(draft)}sheet=null;commit()},
+delItem:()=>{if(!confirm('Delete this title everywhere?'))return;S.items=S.items.filter(i=>i.id!==draft.id);S.lists.forEach(L=>L.items=L.items.filter(r=>r.id!==draft.id));sheet=null;commit()},
+editProfile:()=>{sheet='profile';renderSheet()},
+pickBanner:()=>pick(1400,u=>{S.profile.banner=u;save();render();sheet='profile';renderSheet()}),pickAvatar:()=>pick(400,u=>{S.profile.avatar=u;save();render();sheet='profile';renderSheet()}),
+saveProfile:()=>{const p=S.profile,g=id=>$('#'+id).value;p.name=g('p_name');p.handle=g('p_handle');p.status=g('p_status');p.bio=g('p_bio');p.accent=g('p_accent');sheet=null;commit()},
+newList:()=>{const n=prompt('List name');if(n){S.lists.push({id:uid(),name:n,folders:[],items:[]});commit()}},
+openList:d=>{view={l:d.id};render()},backList:()=>{view={};render()},fold:d=>{view.fo=d.id;render()},
+newFolder:()=>{const n=prompt('Folder name'),L=S.lists.find(x=>x.id===view.l);if(n){const f={id:uid(),name:n};L.folders.push(f);view.fo=f.id;commit()}},
+renameList:()=>{const L=S.lists.find(x=>x.id===view.l),t=L.folders.find(f=>f.id===view.fo)||L,n=prompt('New name',t.name);if(n){t.name=n;commit()}},
+delList:()=>{const L=S.lists.find(x=>x.id===view.l);if(view.fo){if(confirm('Delete this folder? Titles stay in the list.')){L.folders=L.folders.filter(f=>f.id!==view.fo);L.items.forEach(r=>{if(r.fo===view.fo)r.fo=''});view.fo='';commit()}}else if(confirm('Delete this list? Titles stay on your shelf.')){S.lists=S.lists.filter(x=>x!==L);view={};commit()}},
+pickAdd:()=>{pickSet=new Set();sheet='pick';renderSheet()},
+togglePick:(d,el)=>{pickSet.has(d.id)?pickSet.delete(d.id):pickSet.add(d.id);el.classList.toggle('sel')},
+savePick:()=>{const L=S.lists.find(x=>x.id===view.l);pickSet.forEach(id=>{if(!L.items.some(r=>r.id===id))L.items.push({id,fo:view.fo||''})});sheet=null;commit()},
+moveSheet:d=>{draft=S.items.find(i=>i.id===d.id);sheet='move';renderSheet()},
+saveMove:()=>{const L=S.lists.find(x=>x.id===view.l);L.items.find(r=>r.id===draft.id).fo=$('#mv').value;sheet=null;commit()},
+removeFromList:()=>{const L=S.lists.find(x=>x.id===view.l);L.items=L.items.filter(r=>r.id!==draft.id);sheet=null;commit()},editFromList:()=>openItem(draft),
+importAL:async()=>{const u=$('#alu').value.trim();if(!u)return;S.profile.al=u;msg='Importing…';render();
+const q=`query($u:String){MediaListCollection(userName:$u,type:MANGA){lists{entries{status progress score(format:POINT_10_DECIMAL) media{id title{romaji english} coverImage{large} chapters countryOfOrigin genres staff(perPage:1){nodes{name{full}}}}}}}}`;
+try{const r=await fetch('https://graphql.anilist.co',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,variables:{u}})}),j=await r.json();if(j.errors)throw new Error(j.errors[0].message);
+const seen=new Set(S.items.map(i=>i.al).filter(Boolean));let n=0;
+j.data.MediaListCollection.lists.forEach(l=>l.entries.forEach(e=>{const m=e.media;if(seen.has(m.id))return;seen.add(m.id);n++;S.items.push({id:uid(),al:m.id,title:m.title.english||m.title.romaji,author:m.staff.nodes[0]?.name.full||'',type:({KR:'manhwa',CN:'manhua',TW:'manhua'})[m.countryOfOrigin]||'manga',status:({CURRENT:'reading',REPEATING:'reading',COMPLETED:'completed',PLANNING:'planning',PAUSED:'paused',DROPPED:'dropped'})[e.status]||'planning',prog:e.progress||0,total:m.chapters||0,score:e.score||0,tags:m.genres||[],notes:'',cover:m.coverImage.large,myCover:''})}));
+msg=`Imported ${n} new titles.`}catch(e){msg='Import failed: '+e.message}commit()},
+exp:async()=>{const t=JSON.stringify(S),f=new File([t],'mangaji-backup.json',{type:'application/json'});try{await navigator.share({files:[f]})}catch(e){try{await navigator.clipboard.writeText(t);alert('Backup copied to clipboard.')}catch(_){}}},
+imp:()=>{const i=document.createElement('input');i.type='file';i.onchange=async()=>{try{S={...DEF(),...JSON.parse(await i.files[0].text())};commit()}catch(e){alert('Not a valid backup file.')}};i.click()}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t&&act[t.dataset.a])act[t.dataset.a](t.dataset,t);else if(e.target.id==='sh'){sheet=null;renderSheet()}});
+(async()=>{const d=await load();if(d){S={...DEF(),...d};S.profile={...DEF().profile,...d.profile}}render()})();
+</script></body></html>
